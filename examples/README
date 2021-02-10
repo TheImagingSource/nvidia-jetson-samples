@@ -1,0 +1,77 @@
+*IMPORTANT* Do the first time settings at the Welcome.htmp page on the Desktop, selecting the model of your camera(s), and restart to apply changes before running these examples.
+
+There are folowing examples available:
+1. Live view
+2. h.264/h.265 streaming
+3. Face detection inference inside the Deepstream container
+4. Hpeek image processing
+5. Hpeek deep learning 
+
+***
+1. Live view
+
+This example shows a video from the camera with a Gstreamer pipeline. 
+To run the example, double click on the script or execute it in terminal:
+
+$ ./liveview_cam0.sh
+OR
+$ ./liveview_cam1.sh
+
+***
+2. h.264/h.265 streaming
+This example demonstrates how an h.264 (h.265) encoded stream can be created, and how to receive and decode it on another machines.
+To run the streamimg part of the example double click on the script or execute it in terminal:
+
+$ ./h264streaming.sh
+OR
+$ ./h265streaming.sh
+
+Copy the receiveH264stream.sdp (receiveH265stream.sdp) file to the receiving machine and view the video in a suitable player (e.g. VLC). Make sure all the receiving machines are in the same local network as the streaming Jetson.
+
+***
+3. Nvidia Deepstream face detection
+This example shows how to pull the Nvidia docker container for Deepstream and how to run a Gstreamer pipeline with Deepstream plugins for face detection with a camera within the container.
+
+Pull the Deepstream container with samples for Linux for Tegra (see http://ngc.nvidia.com/catalog/containers/nvidia:deepstream-l4t for an updated source link):
+
+$ sudo docker pull nvcr.io/nvidia/deepstream-l4t:5.0.1-20.09-samples
+
+(Optional) Allow external applications to connect to the host's X display:
+
+$ xhost +
+
+Create an instance of the deepstream container adding desired name to the container (with --name tag):
+
+$ sudo docker create -it --name deepstream_samples --net=host --runtime nvidia -e DISPLAY=$DISPLAY -w /opt/nvidia/deepstream/deepstream-5.0 -v /tmp/argus_socket:/tmp/argus_socket --device /dev/video0 -v /tmp/.X11-unix/:/tmp/.X11-unix nvcr.io/nvidia/deepstream-l4t:5.0.1-20.09-samples
+
+Start the deepstream_samples container:
+
+$ sudo docker start -ia deepstream_samples
+
+Create a directory for face detection models and download the files:
+
+$ cd samples/configs/tlt_pretrained_models/
+
+$ mkdir -p ../../models/tlt_pretrained_models/facedetectir
+
+$ wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_facedetectir/versions/pruned_v1.0/files/resnet18_facedetectir_pruned.etlt -O ../../models/tlt_pretrained_models/facedetectir/resnet18_facedetectir_pruned.etlt
+
+$ wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_facedetectir/versions/pruned_v1.0/files/facedetectir_int8.txt -O ../../models/tlt_pretrained_models/facedetectir/facedetectir_int8.txt
+
+Start the inference for face detection with one camera:
+
+$ gst-launch-1.0 nvarguscamerasrc bufapi-version=1 ! nvvideoconvert ! m.sink_0 nvstreammux name=m batch-size=1 width=1948 height=1096 live-source=1 ! nvinfer config-file-path=/opt/nvidia/deepstream/deepstream-5.0/samples/configs/tlt_pretrained_models/config_infer_primary_facedetectir.txt batch-size=1 unique-id=1 ! nvtracker ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_mot_klt.so ! nvmultistreamtiler rows=1 columns=1 width=1280 height=720 ! nvdsosd ! nvegltransform ! nveglglessink
+
+***
+4. Hpeek image processing
+This example is created by MVTec as a presentation to show the capabilities of Halcon - the software for industrial machine vision.
+To run the example double click on the script or execute it in terminal:
+
+$ ./sneak_a_peek_with_hpeek.sh
+
+***
+5. Hpeek deep learning
+This example is created by MVTec as a presentation to show the capabilities of Halcon - the software for industrial machine vision.
+To run the example double click on the script or execute it in terminal:
+
+$ ./deep_learning_with_hpeek.sh
