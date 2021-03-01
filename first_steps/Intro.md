@@ -21,11 +21,11 @@ The precompiled drivers are delivered in the Debian package format and could be 
 
 The Imaging Source sensor modules integrate into the software infrastructure provided by NVIDIA® with the NVIDIA® JetPack SDK. This SDK controls the sensor modules via different programming interfaces:
 
- * Video-4-Linux-2 (v4l2) for low-level interaction with the sensor module, like setting the exposure time and sensor gain values directly or capturing unprocessed raw video data from the imager. The v4l2 API is provided by the Linux kernel as an interface for the 'C' programming language.
+ * [Video-4-Linux-2 (v4l2)](https://linuxtv.org/downloads/v4l-dvb-apis/driver-api/v4l2-core.html) for low-level interaction with the sensor module, like setting the exposure time and sensor gain values directly or capturing unprocessed raw video data from the imager. The v4l2 API is provided by the Linux kernel as an interface for the 'C' programming language.
 
- * Jetson Multimedia API for low level application development utilizing Tegra hardware components to accelerate vision and image processing procedures. The Jetson Multimedia API is provided as an interface for the 'C++' programming language.
+ * [Jetson Multimedia API](https://docs.nvidia.com/jetson/l4t-multimedia/index.html) for low level application development utilizing Tegra hardware components to accelerate vision and image processing procedures. The Jetson Multimedia API is provided as an interface for the 'C++' programming language.
 
- * GStreamer is a library for high level application development. The components provided by NVIDIA® for JetPack build upon the Jetson Multimedia API to utilize the hardware accellerated components provided by the Tegra platform. GStreamer provides bindings for most common programming languages.
+ * [GStreamer](https://gstreamer.freedesktop.org/) is a library for high level application development. The components provided by NVIDIA® for JetPack build upon the Jetson Multimedia API to utilize the hardware accellerated components provided by the Tegra platform. GStreamer provides bindings for most common programming languages.
 
 
 ### Application frameworks optimized for the NVIDIA® Jetson platform
