@@ -1,20 +1,46 @@
-
 # Working with TIS embedded cameras on NVIDIA® Jetson platform
 
 ## Overview
-This introduction is intended to get an overview of the interaction of the different software components involved in working with our embedded camera modules on the Jetson platform.
+This introduction is intended to get an overview of the interaction of the different software components involved in working with The Imaging Source embedded camera modules on the Jetson platform.
 
-## Kernel driver
-The Imaging Source offers kernel mode drivers for the Jetson platform that provide access to the the embedded cameras through the Jetson camera infrastructure. The drivers can be downloaded [here](https://www.theimagingsource.com/support/downloads-for-linux/device-drivers/mipicameradriverjetson45/). This driver enables to work with the cameras with standard NVIDIA software utilizing the ISP, as described below. The driver is provided as ready-to-use Debian package, compatible with NVIDIA JetPack.
+This document covers the following topics:
 
-## Video4Linux (v4l2)
-Video4Linux (v4l2) is the standard API for video capturing on Linux systems. It is used for controlling camera devices as well as streaming data from them. General information regarding v4l2 (Video4Linux2) can be found [here](https://linuxtv.org/downloads/v4l-dvb-apis/). Information on the specifics of NVIDIAs v4l2 extension can be found [here](https://docs.nvidia.com/jetson/l4t-multimedia/group__ee__extensions__group.html). Setting the raw exposure time of TIS embedded cameras can thus be done through the v4l2 API, or e.g. from a console with the command `v4l2-ctl -c exposure=10000`, see also [here](https://manpages.debian.org/stretch/v4l-utils/v4l2-ctl.1).
+ * Device drivers provided by The Imaging Source
+ * Application Programming Interfaces (API) used to control the camera modules
+ * Application frameworks optimized for the NVIDIA® Jetson platform
+ * Getting started with machine vision programming on the NVIDIA® Jetson platform
 
-## GStreamer
-GStreamer is an open-source multimedia framework widely available on Linux systems. NVIDIA heavily relies and builds upon GStreamer on the Jetson platform. General information on GStreamer can be found [here](https://gstreamer.freedesktop.org/). GStreamer provides many ready-to-use elements encapsulating other APIs. They can be easily combined to so-called *pipelines*, like the examples below. Pipelines can be started for instance from a terminal using `gst-launch1.0`.
 
-### Accelerated GStreamer
-NVIDIA provides a broad set of GStreamer modules specifically designed to exploit the hardware of the Jetson platform; detailed information can be found [here](https://docs.nvidia.com/jetson/l4t/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/accelerated_gstreamer.html). The most relevant one in this context is `nvarguscamerasrc` , as it allows for streaming from the embedded cameras and processing the image data in the ISP, see also [here](https://docs.nvidia.com/jetson/l4t/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/accelerated_gstreamer.html#wwpID0E0LR0HA). A basic GStreamer pipeline displaying the camera stream in a window would be `nvarguscamerasrc ! nv3dsink`.
+### The Imaging Source Sensor and Interface Drivers
 
-#### Working with mono sensors
-The ISP built into the Jetson is specifically designed for bayer sensors. As a consequence,  mono sensors are not naturally supported by the ISP. However, there is a simple workaround for this limitation. The debayering of mono data (not containing a bayer pattern) involuntarily leads to unwanted color artifacts, which can be virtually removed by setting the saturation to 0. An example pipeline would be `nvarguscamerasrc saturation=0 ! nv3dsink`
+The sensor modules require device drivers to funktion. You can download precompiled drivers for different NVIDIA® JetPack versions from the [The Imaging Source Website](https://www.theimagingsource.com/support/downloads-for-linux/). Interface drivers required to utilize The Imaging Source FPD-Link-III interfaces are also part of the same driver package.
+
+The precompiled drivers are delivered in the Debian package format and could be installed easily with the package manager, for example by double clicking the downloaded package in the file manager.
+
+### Application Programming Interfaces for The Imaging Source Embedded Sensor Modules
+
+The Imaging Source sensor modules integrate into the software infrastructure provided by NVIDIA® with the NVIDIA® JetPack SDK. This SDK controls the sensor modules via different programming interfaces:
+
+ * [Video-4-Linux-2 (v4l2)](https://linuxtv.org/downloads/v4l-dvb-apis/driver-api/v4l2-core.html) for low-level interaction with the sensor module, like setting the exposure time and sensor gain values directly or capturing unprocessed raw video data from the imager. The v4l2 API is provided by the Linux kernel as an interface for the 'C' programming language.
+
+ * [Jetson Multimedia API](https://docs.nvidia.com/jetson/l4t-multimedia/index.html) for low level application development utilizing Tegra hardware components to accelerate vision and image processing procedures. The Jetson Multimedia API is provided as an interface for the 'C++' programming language.
+
+ * [GStreamer](https://gstreamer.freedesktop.org/) is a library for high level application development. The components provided by NVIDIA® for JetPack build upon the Jetson Multimedia API to utilize the hardware accellerated components provided by the Tegra platform. GStreamer provides bindings for most common programming languages.
+
+
+### Application frameworks optimized for the NVIDIA® Jetson platform
+
+NVIDIA® provides several frameworks optimized for the NVIDIA® Jetson platform to aid resourceful development. These frameworks are installed along with the latest NVIDIA® JetPack SDK:
+
+ * [VisionWorks](https://developer.nvidia.com/embedded/visionworks) is a software development package for Computer Vision (CV) and image processing.
+
+ * [VPI (Vision Programing Interface)](https://developer.nvidia.com/embedded/vpi), a software library that provides Computer Vision / Image Processing algorithms implemented on PVA2 (Programmable Vision Accelerator), GPU and CPU. *PVA is available only on Jetson AGX Xavier series and Jetson Xavier NX*
+
+ * [DeepStream SDK](https://developer.nvidia.com/deepstream-sdk) delivers a complete streaming analytics toolkit for AI-based multi-sensor processing, video, audio and image understanding.
+
+## Getting started with machine vision programming on the NVIDIA® Jetson platform
+
+The Imaging Source provides programming examples to help you getting started with your application development. The examples could be found on this [public GitHub repository](https://github.com/TheImagingSource/nvidia-jetson-samples/tree/master/examples).
+
+To help achieving the best possible performance out of the NVIDIA® Jetson platform, NVIDIA® has created the [Accelerated GStreamer Guide](https://docs.nvidia.com/jetson/l4t/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/accelerated_gstreamer.html).
+
