@@ -42,7 +42,7 @@ $ xhost +
 
 Create an instance of the deepstream container adding desired name to the container (with --name tag):
 
-$ sudo docker create -it --name deepstream_samples --net=host --runtime nvidia -e DISPLAY=$DISPLAY -w /opt/nvidia/deepstream/deepstream-5.0 -v /tmp/argus_socket:/tmp/argus_socket --device /dev/video0 -v /tmp/.X11-unix/:/tmp/.X11-unix nvcr.io/nvidia/deepstream-l4t:5.0.1-20.09-samples
+$ sudo docker create -it --name deepstream_samples --net=host --runtime nvidia -e DISPLAY=$DISPLAY -w /opt/nvidia/deepstream/deepstream-5.0 -v /tmp/argus_socket:/tmp/argus_socket --device /dev/video0 -v /home/jupyter/Desktop/Examples/DeepLearning/:/tmp/DeepLearning -v /tmp/.X11-unix/:/tmp/.X11-unix nvcr.io/nvidia/deepstream-l4t:5.0.1-20.09-samples
 
 Start the deepstream_samples container:
 
