@@ -39,7 +39,7 @@ num-extra-surfaces=10
 type=5
 camera-width=1456
 camera-height=1088
-camera-fps-n=60
+camera-fps-n=30
 camera-csi-sensor-id=0
 num-sources=1
 uri=csi:/dev/video0
@@ -48,7 +48,7 @@ gpu-id=0
 [streammux]
 gpu-id=0
 batch-size=1
-batched-push-timeout=1/max_fps
+#batched-push-timeout=1/max_fps
 ## Set muxer output width and height
 width=1456
 height=1088
@@ -84,7 +84,7 @@ bbox-border-color1=0;1;1;1
 bbox-border-color2=0;0;1;1
 bbox-border-color3=0;1;0;1
 gie-unique-id=1
-config-file=/home/jupyter/Desktop/Examples/DeepLearning/MaskDetect/config_maskdetect.txt
+config-file=/tmp/DeepLearning/MaskDetect/config_maskdetect.txt
 
 [sink1]
 enable=0

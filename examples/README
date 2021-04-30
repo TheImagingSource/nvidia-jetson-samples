@@ -52,7 +52,7 @@ There is folowing examples available:
     $ sudo docker start -ia deepstream_samples
 
 ***
-5.  Face detection with Nvidia Deepstream Gstreamer pipeline
+4.  Face detection with Nvidia Deepstream Gstreamer pipeline
 
     Follow all steps from the example 3 before proceeding to this one.
 
@@ -84,16 +84,20 @@ There is folowing examples available:
     $ sudo docker start -ia deepstream_samples
     $ cd /tmp/DeepLearning/MaskDetect
 
-    Download a pre-trained model. If you are running this example on Jetson Nano, get the pruned model (resnet18_mask_detector.etlt); if youare on Jetson Xavier NX, you can get the unpruned model (resnet18_mask_detector_unpruned.etlt) for better detection.
-    Pruned:
+    Download a pre-trained model. If you are running this example on Jetson Nano, get the pruned (optimized) model (resnet18_mask_detector.etlt). if youare on Jetson Xavier NX, you can get the unpruned model (resnet18_mask_detector_unpruned.etlt) for better detection. Pruned:
+
     $ wget https://github.com/TheImagingSource/nvidia-jetson-samples/raw/master/examples/deep-learning/maskdetect/resnet18_mask_detector.etlt -O resnet18_mask_detector.etlt
+
     Unpruned:
+
     $ wget https://github.com/TheImagingSource/nvidia-jetson-samples/raw/master/examples/deep-learning/maskdetect/resnet18_mask_detector_unpruned.etlt -O resnet18_mask_detector_unpruned.etlt
 
     Start the Deepstream:
+    
     $ deepstream-app -c deepstream_app_source1_maskdetect.txt
 
-    You can change configuration in the config_maskdetect.txt to tune it
+    You can change configuration in deepstream_app_source1_maskdetect.txt and config_maskdetect.txt to adapt this example for your setup.
+    
 ***
 6.  Hpeek image processing
 
