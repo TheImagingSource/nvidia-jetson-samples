@@ -3,9 +3,11 @@
 There is folowing examples available:
 1.  Live view
 2.  h.264/h.265 streaming
-3.  Face detection inference inside a Deepstream container
-4.  Hpeek image processing
-5.  Hpeek deep learning 
+3.  How to pull Nvidia Deepstream docker container
+4.  Face detection with Nvidia Deepstream Gstreamer pipeline
+5.  Mask detection with Nvidia Deepstream app
+6.  Hpeek image processing
+7.  Hpeek deep learning 
 
 ***
 1.  Live view
@@ -30,7 +32,7 @@ There is folowing examples available:
     Copy the receiveH264stream.sdp (receiveH265stream.sdp) file to a computer that will receive the stream and view the video in a suitable player (e.g. VLC). Make sure that all the receiving computers are in the same local network as the streaming Jetson.
 
 ***
-3.  Nvidia Deepstream face detection
+3.  How to pull Nvidia Deepstream docker container
 
     This example shows how to pull the Nvidia docker container for Deepstream and how to run a Gstreamer pipeline with Deepstream plugins for the face detection with a camera.
     Pull the Deepstream container with samples for Linux for Tegra (see http://ngc.nvidia.com/catalog/containers/nvidia:deepstream-l4t for an updated source link):
@@ -44,6 +46,15 @@ There is folowing examples available:
     Create an instance of the deepstream container adding desired name to the container (with --name <name> tag):
 
     $ sudo docker create -it --name deepstream_samples --net=host --runtime nvidia -e DISPLAY=$DISPLAY -w /opt/nvidia/deepstream/deepstream-5.0 -v /tmp/argus_socket:/tmp/argus_socket --device /dev/video0 -v /home/jupyter/Desktop/Examples/DeepLearning/:/tmp/DeepLearning -v /tmp/.X11-unix/:/tmp/.X11-unix nvcr.io/nvidia/deepstream-l4t:5.0.1-20.09-samples
+    
+    Start the deepstream_samples container
+        
+    $ sudo docker start -ia deepstream_samples
+
+***
+5.  Face detection with Nvidia Deepstream Gstreamer pipeline
+
+    Follow all steps from the example 3 before proceeding to this one.
 
     Start the deepstream_samples container:
 
@@ -64,7 +75,27 @@ There is folowing examples available:
     $ gst-launch-1.0 nvarguscamerasrc bufapi-version=1 ! nvvideoconvert ! m.sink_0 nvstreammux name=m batch-size=1 width=1948 height=1096 live-source=1 ! nvinfer config-file-path=/opt/nvidia/deepstream/deepstream-5.0/samples/configs/tlt_pretrained_models/config_infer_primary_facedetectir.txt batch-size=1 unique-id=1 ! nvtracker ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_mot_klt.so ! nvmultistreamtiler rows=1 columns=1 width=1280 height=720 ! nvdsosd ! nvegltransform ! nveglglessink
 
 ***
-4.  Hpeek image processing
+5.  Mask detection with Nvidia Deepstream app
+
+    Follow all steps from the example 3 before proceeding to this one.
+
+    Start the deepstream_samples container and enter the MaskDetect/ directory:
+
+    $ sudo docker start -ia deepstream_samples
+    $ cd /tmp/DeepLearning/MaskDetect
+
+    Download a pre-trained model. If you are running this example on Jetson Nano, get the pruned model (resnet18_mask_detector.etlt); if youare on Jetson Xavier NX, you can get the unpruned model (resnet18_mask_detector_unpruned.etlt) for better detection.
+    Pruned:
+    $ wget https://github.com/TheImagingSource/nvidia-jetson-samples/raw/master/examples/deep-learning/maskdetect/resnet18_mask_detector.etlt -O resnet18_mask_detector.etlt
+    Unpruned:
+    $ wget https://github.com/TheImagingSource/nvidia-jetson-samples/raw/master/examples/deep-learning/maskdetect/resnet18_mask_detector_unpruned.etlt -O resnet18_mask_detector_unpruned.etlt
+
+    Start the Deepstream:
+    $ deepstream-app -c deepstream_app_source1_maskdetect.txt
+
+    You can change configuration in the config_maskdetect.txt to tune it
+***
+6.  Hpeek image processing
 
     This example is created by MVTec as a presentation to show image processing capabilities of HALCON - software for industrial machine vision.
     Run this example by double clicking on the script file or execute it in terminal:
@@ -72,7 +103,7 @@ There is folowing examples available:
     $ ./sneak_a_peek_with_hpeek.sh
 
 ***
-5.  Hpeek deep learning
+7.  Hpeek deep learning
 
     This example is created by MVTec as a presentation to show deep learning capabilities of HALCON - software for industrial machine vision.
     Run this example by double clicking on the script file or execute it in terminal:
