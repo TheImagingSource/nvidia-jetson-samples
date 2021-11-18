@@ -1,6 +1,8 @@
 *IMPORTANT* Change first time settings at the /Desktop/Welcome.htmp page: change a time zone, select a model of your camera(s) and restart to apply changes before running following examples.
 
-There is folowing examples available:
+All documentation and examples can be found in our Github repository: https://github.com/TheImagingSource/nvidia-jetson-samples
+
+There are folowing examples available:
 1.  Live view
 2.  h.264/h.265 streaming
 3.  How to pull Nvidia Deepstream docker container
